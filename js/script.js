@@ -229,10 +229,13 @@ const init = () => {
       if (switchValue === "total") {
         config.data.labels.push(row[1] + "/" + row[2]);
         config.data.datasets[0].data.push(row[3]);
-      } else if (i >= 1) {
+      } else if (i >= 3) {
         config.data.labels.push(row[1] + "/" + row[2]);
         let prev = rows[i - 1];
-        config.data.datasets[0].data.push(row[3] - prev[3]);
+        let prev2 = rows[i - 2];
+        let prev3 = rows[i - 3];
+//        config.data.datasets[0].data.push(row[3] - prev[3]);
+        config.data.datasets[0].data.push(((row[3] - prev[3]) + (prev[3] - prev2[3]) + (prev2[3] - prev3[3])) / 3.0);
       }
     });
 
@@ -636,11 +639,14 @@ const init = () => {
           config.data.datasets[j].data.push(row[k + 2]);
         }
       } else {
-        if (i >= 1) {
+        if (i >= 3) {
           config.data.labels.push(row[1] + "/" + row[2]);
 
           let prev = rows[i - 1][parseInt(prefCode) + 2];
-          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
+          let prev2 = rows[i - 2][parseInt(prefCode) + 2];
+          let prev3 = rows[i - 3][parseInt(prefCode) + 2];
+//          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
+          config.data.datasets[0].data.push( ((row[parseInt(prefCode) + 2] - prev) + (prev - prev2) + (prev2 - prev3)) / 3.0 );
 
           for (let j = 1; j <= 46; j++) {
             let k = (j >= parseInt(prefCode)) ? j + 1: j;
@@ -662,8 +668,7 @@ const init = () => {
   }
 
   const loadData = () => {
-    //$.getJSON("https://raw.githubusercontent.com/kaz-ogiwara/covid19/master/data/data.json", function(data){
-    $.getJSON("data/data202004061527.json", function(data){
+      $.getJSON("https://raw.githubusercontent.com/kaz-ogiwara/covid19/master/data/data.json", function(data){
       gData = data;
       updateThresholds();
       drawTransitionBoxes();
