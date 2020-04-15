@@ -655,7 +655,7 @@ const init = () => {
 //            let prev = rows[i - 1][k + 2];
 //            config.data.datasets[j].data.push(row[k + 2] - prev);
             let prev = rows[i - NumAvg + 1][k + 2];
-            config.data.datasets[j].data.push( (row[k + 2] - prev) / NumAvg) );
+            config.data.datasets[j].data.push( (row[k + 2] - prev) / NumAvg );
           }
         }
       }
