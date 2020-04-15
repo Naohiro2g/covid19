@@ -45,6 +45,11 @@
       </div>
       <div id="main-block">
         <h2>Nationwide Situation</h2>
+        <select id="select-average-trans">
+          <option value="1">no average</option>
+          <option value="7">7 days simple moving average</option>
+          <option value="14">14 days simple moving average</option>
+        </select>
         <div class="flex-container">
           <div class="flex-row">
             <div class="box transition" code="carriers">
@@ -241,6 +246,11 @@
               <option value="46">Kagoshima</option>
               <option value="47">Okinawa</option>
             </select>
+            <select id="select-average-pref">
+              <option value="1">no average</option>
+              <option value="7">7 days simple moving average</option>
+              <option value="14">14 days simple moving average</option>
+            </select>
             <div class="flex-container">
               <div class="flex-row t03">
                 <div class="box prefecture-chart" code="carriers">
@@ -382,6 +392,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="js/jquery.japan-map.min.js"></script>
-    <script src="js/script.min.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
