@@ -639,15 +639,12 @@ const init = () => {
           config.data.datasets[j].data.push(row[k + 2]);
         }
       } else {
-        if (i >= 5) {
+        let NumAvg = 5
+        if (i >= NumAvg) {
           config.data.labels.push(row[1] + "/" + row[2]);
 
-          let prev = rows[i - 1][parseInt(prefCode) + 2];
-          let prev2 = rows[i - 2][parseInt(prefCode) + 2];
-          let prev3 = rows[i - 3][parseInt(prefCode) + 2];
-          let prev4 = rows[i - 4][parseInt(prefCode) + 2];
-          let prev5 = rows[i - 5][parseInt(prefCode) + 2];
-          let avg = ( (row[parseInt(prefCode) + 2] - prev) + (prev - prev2) + (prev2 - prev3) + (prev3 - prev4) + (prev4 - prev5) ) / 5.0
+          let avg = ( row[parseInt(prefCode) + 2] - rows[i - NumAvg][parseInt(prefCode) + 2] ) / NumAvg;
+      
 //          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
           config.data.datasets[0].data.push( avg );
 
