@@ -7,7 +7,7 @@ let gThresholds = {
   pcrtested: 0
 };
 
-const NumAvg = 5;
+const NumAvg = 7;
 
 const LANG = $("html").attr("lang");
 const COLORS = {
