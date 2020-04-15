@@ -7,6 +7,8 @@ let gThresholds = {
   pcrtested: 0
 };
 
+const NumAvg = 5;
+
 const LANG = $("html").attr("lang");
 const COLORS = {
   default: "#3DC",
@@ -229,13 +231,12 @@ const init = () => {
       if (switchValue === "total") {
         config.data.labels.push(row[1] + "/" + row[2]);
         config.data.datasets[0].data.push(row[3]);
-      } else if (i >= 3) {
+      } else if (i >= NumAvg) {
         config.data.labels.push(row[1] + "/" + row[2]);
-        let prev = rows[i - 1];
-        let prev2 = rows[i - 2];
-        let prev3 = rows[i - 3];
+
+        let avg = (row[3] - rows[i - NumAvg + 1]) / NumAvg;
 //        config.data.datasets[0].data.push(row[3] - prev[3]);
-        config.data.datasets[0].data.push(((row[3] - prev[3]) + (prev[3] - prev2[3]) + (prev2[3] - prev3[3])) / 3.0);
+        config.data.datasets[0].data.push(avg);
       }
     });
 
@@ -639,11 +640,10 @@ const init = () => {
           config.data.datasets[j].data.push(row[k + 2]);
         }
       } else {
-        let NumAvg = 5
         if (i >= NumAvg) {
           config.data.labels.push(row[1] + "/" + row[2]);
 
-          let avg = ( row[parseInt(prefCode) + 2] - rows[i - NumAvg][parseInt(prefCode) + 2] ) / NumAvg;
+          let avg = ( row[parseInt(prefCode) + 2] - rows[i - NumAvg + 1][parseInt(prefCode) + 2] ) / NumAvg;
       
 //          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
           config.data.datasets[0].data.push( avg );
