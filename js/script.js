@@ -231,11 +231,12 @@ const init = () => {
       if (switchValue === "total") {
         config.data.labels.push(row[1] + "/" + row[2]);
         config.data.datasets[0].data.push(row[3]);
-      } else if (i >= NumAvg) {
+      } else if (i >= 4) {
         config.data.labels.push(row[1] + "/" + row[2]);
 
-        let prev = rows[i - NumAvg + 1];
-        let avg = (row[3] - prev[3]) / NumAvg;
+        let prev = rows[i - 4];
+        let avg = (row[3] - prev[3] ) / 5.0;
+
 //        let prev = rows[i - 1];
 //        config.data.datasets[0].data.push(row[3] - prev[3]);
         config.data.datasets[0].data.push( avg );
@@ -646,9 +647,10 @@ const init = () => {
           config.data.labels.push(row[1] + "/" + row[2]);
 
           let prev = rows[i - NumAvg + 1][parseInt(prefCode) + 2];
+          let avg = (row[parseInt(prefCode) + 2] - prev) / NumAvg;
       
 //          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
-          config.data.datasets[0].data.push( (row[parseInt(prefCode) + 2] - prev) / NumAvg );
+          config.data.datasets[0].data.push( Math.round(avg * 10) / 10 );
 
           for (let j = 1; j <= 46; j++) {
             let k = (j >= parseInt(prefCode)) ? j + 1: j;
