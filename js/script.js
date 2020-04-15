@@ -7,7 +7,8 @@ let gThresholds = {
   pcrtested: 0
 };
 
-const NumAvg = 7;
+//let NumAvgTrans = 7;
+//let NumAvgPref = 7;
 
 const LANG = $("html").attr("lang");
 const COLORS = {
@@ -135,11 +136,11 @@ const init = () => {
   const drawTransitionBoxes = () => {
     $(".transition").each(function(){
       let code = $(this).attr("code");
-      drawTransitionChart($(this), code);
+      drawTransitionChart($(this), code, $("#select-average-trans").val());
     });
   }
 
-  const drawTransitionChart = ($box, code) => {
+  const drawTransitionChart = ($box, code, NumAvgTrans) => {
     let $chart = $box.find(".chart").empty().html("<canvas></canvas>");
     let $canvas = $chart.find("canvas")[0];
     let switchValue = $box.find(".switch.selected").attr("value");
@@ -231,10 +232,10 @@ const init = () => {
       if (switchValue === "total") {
         config.data.labels.push(row[1] + "/" + row[2]);
         config.data.datasets[0].data.push(row[3]);
-      } else if (i >= NumAvg) {
+      } else if (i >= NumAvgTrans) {
         config.data.labels.push(row[1] + "/" + row[2]);
-        let prev = rows[i - NumAvg];
-        let avg = (row[3] - prev[3] ) / NumAvg;
+        let prev = rows[i - NumAvgTrans];
+        let avg = (row[3] - prev[3] ) / NumAvgTrans;
         config.data.datasets[0].data.push( Math.round(avg * 10) / 10 );
       }
     });
@@ -516,11 +517,11 @@ const init = () => {
     $("#select-prefecture").val(prefCode);
     $(".prefecture-chart").each(function(){
       let code = $(this).attr("code");
-      drawPrefectureChart(prefCode, code);
+      drawPrefectureChart(prefCode, code, $("#select-average-pref").val());
     });
   }
 
-  const drawPrefectureChart = (prefCode, typeCode) => {
+  const drawPrefectureChart = (prefCode, typeCode, NumAvgPref) => {
     let $box = $(".prefecture-chart[code=" + typeCode + "]");
     $box.find("h3").find("span").text(gData["prefectures-map"][parseInt(prefCode) - 1][LANG]);
 
@@ -639,16 +640,16 @@ const init = () => {
           config.data.datasets[j].data.push(row[k + 2]);
         }
       } else {
-        if (i >= NumAvg) {
+        if (i >= NumAvgPref) {
           config.data.labels.push(row[1] + "/" + row[2]);
-          let prev = rows[i - NumAvg][parseInt(prefCode) + 2];
-          let avg = (row[parseInt(prefCode) + 2] - prev) / NumAvg;
+          let prev = rows[i - NumAvgPref][parseInt(prefCode) + 2];
+          let avg = (row[parseInt(prefCode) + 2] - prev) / NumAvgPref;
           config.data.datasets[0].data.push( Math.round(avg * 10) / 10 );
 
           for (let j = 1; j <= 46; j++) {
             let k = (j >= parseInt(prefCode)) ? j + 1: j;
-            let prev = rows[i - NumAvg][k + 2];
-            config.data.datasets[j].data.push( (row[k + 2] - prev) / NumAvg );
+            let prev = rows[i - NumAvgPref][k + 2];
+            config.data.datasets[j].data.push( (row[k + 2] - prev) / NumAvgPref );
           }
         }
       }
@@ -683,19 +684,29 @@ const init = () => {
       let $box = $(this).closest(".transition");
       $(this).siblings(".switch").removeClass("selected");
       $(this).addClass("selected");
-      drawTransitionChart($box, $box.attr("code"));
+      drawTransitionChart($box, $box.attr("code"), $("#select-average-trans").val());
     });
 
     $(".prefecture-chart").find(".switch").on("click",function(){
       let $box = $(this).closest(".prefecture-chart");
       $(this).siblings(".switch").removeClass("selected");
       $(this).addClass("selected");
-      drawPrefectureChart($("#select-prefecture").val(), $box.attr("code"));
+      drawPrefectureChart($("#select-prefecture").val(), $box.attr("code"), $("#select-average-pref").val());
     });
 
     $("#select-prefecture").on("change", function(){
       let prefCode = $(this).val();
       drawPrefectureCharts(prefCode);
+    });
+
+    $("#select-average-trans").on("change", function(){
+      let NumAvgTrans = $(this).val();
+      drawTransitionBoxes();
+    });
+
+    $("#select-average-pref").on("change", function(){
+      let NumAvgPref = $(this).val();
+      drawPrefectureCharts($("#select-prefecture").val());
     });
 
     $("#select-pref-type").on("change", function(){
