@@ -236,6 +236,7 @@ const init = () => {
 
         let prev = rows[i - NumAvg + 1];
         let avg = (row[3] - prev[3]) / NumAvg;
+//        let prev = rows[i - 1];
 //        config.data.datasets[0].data.push(row[3] - prev[3]);
         config.data.datasets[0].data.push( avg );
       }
@@ -644,15 +645,17 @@ const init = () => {
         if (i >= NumAvg) {
           config.data.labels.push(row[1] + "/" + row[2]);
 
-          let avg = ( row[parseInt(prefCode) + 2] - rows[i - NumAvg + 1][parseInt(prefCode) + 2] ) / NumAvg;
+          let prev = rows[i - NumAvg + 1][parseInt(prefCode) + 2];
       
 //          config.data.datasets[0].data.push(row[parseInt(prefCode) + 2] - prev);
-          config.data.datasets[0].data.push( avg );
+          config.data.datasets[0].data.push( (row[parseInt(prefCode) + 2] - prev) / NumAvg );
 
           for (let j = 1; j <= 46; j++) {
             let k = (j >= parseInt(prefCode)) ? j + 1: j;
-            let prev = rows[i - 1][k + 2];
-            config.data.datasets[j].data.push(row[k + 2] - prev);
+//            let prev = rows[i - 1][k + 2];
+//            config.data.datasets[j].data.push(row[k + 2] - prev);
+            let prev = rows[i - NumAvg + 1][k + 2];
+            config.data.datasets[j].data.push( (row[k + 2] - prev) / NumAvg) );
           }
         }
       }
