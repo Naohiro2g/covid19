@@ -234,7 +234,7 @@ const init = () => {
       } else if (i >= NumAvg) {
         config.data.labels.push(row[1] + "/" + row[2]);
 
-        let avg = (row[3] - rows[i - NumAvg + 1][3]) / NumAvg;
+        let avg = (row[3] - rows[3][i - NumAvg + 1]) / NumAvg;
 //        config.data.datasets[0].data.push(row[3] - prev[3]);
         config.data.datasets[0].data.push( avg );
       }
